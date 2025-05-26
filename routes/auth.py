@@ -3,9 +3,12 @@ from flask_jwt_extended import create_access_token
 from models import User
 auth_bp = Blueprint("auth", __name__, url_prefix="/api/auth")
 
-@auth_bp.route("/login", methods=["POST"])
+
+@auth_bp.route("/login", methods=["POST", "OPTIONS"])
 def login():
-    
+    if request.method == "OPTIONS":
+        # Respond to preflight request with 200 OK
+        return '', 200
     data = request.get_json()
     email = data.get("email")
     password = data.get("password")
